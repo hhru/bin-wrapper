@@ -175,7 +175,9 @@ module.exports = class BinWrapper {
 
 		return Promise.all(urls.map(url => download(url, this.dest(), {
 			extract: true,
-			strip: this.options.strip
+			strip: this.options.strip,
+			timeout: { lookup: 100, connect: 100, secureConnect: 200 },
+			retry: { limit: 5 }
 		}))).then(result => {
 			const resultingFiles = flatten(result.map((item, index) => {
 				if (Array.isArray(item)) {
